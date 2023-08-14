@@ -10,8 +10,8 @@ int iteration = 0;
 
 // Define frames per second.
 // Total animation time: animation_frames * FPS
-// default is 30 FPS
-const uint8_t FPS = 30;
+// My hardware can run at 20 FPS
+const uint8_t FPS = 20;
 const unsigned long frame_duration = 1000 / FPS;
 
 void setup() {
@@ -26,8 +26,8 @@ void setup() {
 
 void loop() {
 
-  Serial.print("Iteration ");
-  Serial.println(iteration);
+  //Serial.print("Iteration ");
+  //Serial.println(iteration);
   ++iteration;
 
   // Annotate when the loop starts
@@ -38,7 +38,7 @@ void loop() {
   // Randomly decide to blink
   probability = random(0, 100); // [0, 99]
   if (probability < 1) {
-    Serial.println("Blinking");
+    //Serial.println("Blinking");
     gui.blink();
   }
 
@@ -63,23 +63,29 @@ void loop() {
     float distance = sqrt(pow(box_point_x - gui.width / 2, 2) + pow(box_point_y - gui.height / 2, 2));
 
     // Randomly choose a distance from the center to look at
-    float ro = random(distance / 10, distance / 2);
+    float ro = random(distance / 5, distance / 2);
 
     // Translate from polar to cartesian
     uint8_t x = gui.width / 2 + ro * cos(alpha);
     uint8_t y = gui.height / 2 + ro * sin(alpha);
 
     // Print the new point
-    Serial.print("Looking at ( ");
-    Serial.print(x);
-    Serial.print(", ");
-    Serial.print(y);
-    Serial.println(")");
+    //Serial.print("Looking at ( ");
+    //Serial.print(x);
+    //Serial.print(", ");
+    //Serial.print(y);
+    //Serial.println(")");
   
     // Make the robot look at the point
     gui.look(x, y);
 
   }
+
+  if (iteration == 100)
+    gui.happy();
+  
+  if (iteration == 200)
+    gui.normal();
 
   gui.step();
 

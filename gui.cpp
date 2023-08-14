@@ -37,7 +37,7 @@ GUI::GUI(): display(OLED_ADDRESS, SDA, SCL) {
   eye_distance = eye_bbox_width / 2 + 6;
 
   // Pixel distance threshold
-  pixel_distance_threshold = 5;
+  pixel_distance_threshold = 2;
 
 }
 
@@ -79,20 +79,10 @@ void GUI::init() {
   interpolation_occurring = false;
 
   // Blinking animation
-  blinking_total_steps = 3;
+  blinking_total_steps = 2;
   blinking_current_step = 0;
   blinking_occurring = false;
   unblinking_occurring = false;
-
-  Serial.print("Screen width : ");
-  Serial.println(width);
-  Serial.print("Screen height: ");
-  Serial.println(height);
-
-  Serial.print("Eye bounding box width : ");
-  Serial.println(eye_bbox_width);
-  Serial.print("Eye bounding box height: ");
-  Serial.println(eye_bbox_height);
 
   /*
   // Draw the left polygon
@@ -253,7 +243,7 @@ void GUI::step() {
   // Interpolate the current point to reach the target point (movement of the eyes)
 
   float distance = sqrt(pow((current_x - target_x), 2) + pow((current_y - target_y), 2));
-  float increment = distance / 10;
+  float increment = distance / 5;
 
   // Check if movement is needed
   if (distance > pixel_distance_threshold) {

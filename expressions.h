@@ -89,15 +89,22 @@ const float expr_angry_points [][2] PROGMEM = {
 
 const float expr_curious_points [][2] PROGMEM = {
 
-}
+};
 
 const float expr_worried_points [][2] PROGMEM = {
 
-}
+};
 
 const float expr_happy_points [][2] PROGMEM = {
-
-}
+  {0, 0.4},
+  {0, 0.95},
+  {0.05, 1},
+  {0.95, 1},
+  {1, 0.95},
+  {1, 0.4},
+  {0.95, 0.55},
+  {0.05, 0.55}
+};
 
 
 #endif // EXPRESSIONS_H
