@@ -74,6 +74,10 @@ class GUI {
     void happy(void);
     void angry(void);
 
+    void enable_eye_perspective(void);
+    void disable_eye_perspective(void);
+    void set_eye_perspective(bool perspective_enabled);
+
   private:
 
     // Display object
@@ -124,6 +128,15 @@ class GUI {
     uint8_t blinking_current_step;
     bool blinking_occurring; // true if the robot is blinking
     bool unblinking_occurring; // true if the robot is unblinking
+
+    /*
+     * Eye perspective: if the robot looks up or down, the eyes
+     * appear squished, if the robot looks left or right, the
+     * left and right eye respectively are bigger.
+     */
+    bool eye_perspective_enabled;
+    uint8_t min_bbox_width, max_bbox_width;
+    uint8_t min_bbox_height, max_bbox_height;
 
     /**
      * Screen update routine:

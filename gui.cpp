@@ -31,10 +31,17 @@ GUI::GUI(): display(OLED_ADDRESS, SDA, SCL) {
   right_target_x = right_current_x;
   right_target_y = right_current_y;
 
+  // Perspective control
+  min_bbox_width = width / 5.6;
+  max_bbox_width = width / 4;
+  min_bbox_height = height / 5;
+  max_bbox_height = height / 2.4;
+  eye_perspective_enabled = true;
+
   // Eye size
-  eye_bbox_width = width / 6;
-  eye_bbox_height = height / 2.8;
-  eye_distance = eye_bbox_width / 2 + 6;
+  eye_bbox_width = min_bbox_width;
+  eye_bbox_height = max_bbox_height;
+  eye_distance = eye_bbox_width / 2 + 4;
 
   // Pixel distance threshold
   pixel_distance_threshold = 2;
@@ -269,9 +276,27 @@ void GUI::step() {
   right_current_x = current_x + eye_distance;
   right_current_y = current_y;
 
+  // Update eye perspective
+  if (eye_perspective_enabled) {
+
+    // Vertical perspective
+    uint8_t y_distance = abs(current_y - center_y);
+    float y_factor = (y_distance * 2.0) / height;  // y_distance / (height / 2) 
+    eye_bbox_height = max_bbox_height - y_factor * (max_bbox_height - min_bbox_height); 
+
+    // Horizontal perspective
+    // TODO: add horizontal perspective (will require to split eye_bbox_width into
+    // eye_left_bbox_width and eye_right_bbox_width)
+
+  }
+
   // Finally, update the screen
   update();
 }
+
+/*
+ * Eye movement control
+ */
 
 void GUI::look(const float x, const float y) {
   target_x = x;
@@ -281,6 +306,25 @@ void GUI::look(const float x, const float y) {
 bool GUI::is_looking_at(const float x, const float y) {
   return current_x == target_x && current_y == target_y;
 }
+
+/*
+ * Eye perspective control
+ */
+void GUI::enable_eye_perspective() {
+  eye_perspective_enabled = true;
+}
+
+void GUI::disable_eye_perspective() {
+  eye_perspective_enabled = false;
+}
+
+void GUI::set_eye_perspective(bool perspective_enabled) {
+  eye_perspective_enabled = perspective_enabled;
+}
+
+/*
+ * Blinking and unblinking steps for the blink animation 
+ */
 
 void GUI::blink(void) {
 
@@ -297,6 +341,10 @@ void GUI::unblink(void) {
   target_left_polygon = expr_normal_points;
   target_right_polygon = expr_normal_points;
 }
+
+/*
+ * Facial expressions
+ */
 
 void GUI::angry(void) {
 
