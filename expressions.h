@@ -58,12 +58,26 @@ const float expr_angry_points[][2] PROGMEM = {
   { 0.05, 0 }
 };
 
-const float expr_curious_points[][2] PROGMEM = {
-
+const float expr_confused_points[][2] PROGMEM = {
+  { 0, 0.25 },
+  { 0, 0.75 },
+  { 0.05, 0.8 },
+  { 0.95, 0.8 },
+  { 1, 0.75 },
+  { 1, 0.25 },
+  { 0.95, 0.2 },
+  { 0.05, 0.2 }
 };
 
 const float expr_worried_points[][2] PROGMEM = {
-
+  { 0, 0.05},
+  { 0, 0.35},
+  { 0.05, 0.4},
+  { 0.9, 0.55},
+  { 1, 0.45},
+  { 1, 0.1},
+  { 0.9, 0},
+  { 0.05, 0}
 };
 
 const float expr_happy_points[][2] PROGMEM = {

@@ -82,7 +82,7 @@ void loop() {
   }
 
   if (iteration == 100)
-    gui.happy();
+    gui.confused();
   
   if (iteration == 200)
     gui.normal();

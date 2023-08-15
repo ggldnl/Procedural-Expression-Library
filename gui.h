@@ -69,7 +69,7 @@ class GUI {
      */
 
     void normal(void);
-    void curious(void);
+    void confused(void);
     void worried(void);
     void happy(void);
     void angry(void);

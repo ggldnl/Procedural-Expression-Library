@@ -358,10 +358,22 @@ void GUI::normal(void) {
   mirror_left = false;
 }
 
-void GUI::curious(void) {
+void GUI::confused(void) {
 
-  target_left_polygon = expr_curious_points;
-  target_right_polygon = expr_curious_points;
+  // we will use epxr_normal_points
+  // target_left_polygon = expr_curious_points;
+  // target_right_polygon = expr_curious_points;
+
+  // Randomly decide to squish the left or right eye
+  uint8_t probability = random(0, 100); // [0, 99]
+  if (probability < 50) {
+    target_left_polygon = expr_normal_points;
+    target_right_polygon = expr_confused_points;
+  } else {
+    target_left_polygon = expr_confused_points;
+    target_right_polygon = expr_normal_points;
+  }
+
   interpolation_occurring = true;
   mirror_left = false;
 }
