@@ -32,14 +32,15 @@ GUI::GUI(): display(OLED_ADDRESS, SDA, SCL) {
   right_target_y = right_current_y;
 
   // Perspective control
-  min_bbox_width = width / 5.6;
-  max_bbox_width = width / 4;
   min_bbox_height = height / 5;
   max_bbox_height = height / 2.4;
-  eye_perspective_enabled = true;
+  min_bbox_width = width / 6.5;
+  max_bbox_width = width / 5.6;
+  height_perspective_enabled = true;
+  width_perspective_enabled = true;
 
   // Eye size
-  eye_bbox_width = min_bbox_width;
+  eye_bbox_width = max_bbox_width;
   eye_bbox_height = max_bbox_height;
   eye_distance = eye_bbox_width / 2 + 4;
 
@@ -59,25 +60,16 @@ void GUI::init() {
   // Rotate the display
   display.flipScreenVertically();
 
-  // Init left polygon
+  // Init left and right polygon
   
   copy(expr_normal_points, current_left_polygon, num_points);
-
-  // Scale the polygon to match the bounding box size and translate it to the current position
-  //current_left_polygon.inplace_scale(eye_bbox_width, eye_bbox_height);
-
-  // Init right polygon
-
   copy(expr_normal_points, current_right_polygon, num_points);
-  //current_right_polygon.inplace_scale(eye_bbox_width, eye_bbox_height);
 
   // Init target left and right polygon
 
   target_left_polygon = expr_normal_points;
-  // target_left_polygon.inplace_scale(eye_bbox_width, eye_bbox_height);
-
   target_right_polygon = expr_normal_points;
-  // target_right_polygon.inplace_scale(eye_bbox_width, eye_bbox_height);
+  mirror_left = false;
 
   // Interpolation among current and target polygons
   interpolation_enabled = true; // set this to false to disable changing expression
@@ -90,24 +82,6 @@ void GUI::init() {
   blinking_current_step = 0;
   blinking_occurring = false;
   unblinking_occurring = false;
-
-  /*
-  // Draw the left polygon
-  for (int8_t i = 0; i < eye_bbox_height + 1; ++i) {
-    
-    Serial.print(i < 10 ? "i =  " : "i = ");
-    Serial.print(i);
-    Serial.print(" -> ");
-
-    for (int8_t j = 0; j < eye_bbox_width + 1; ++j) {
-      if (current_left_polygon.contains(j, i))
-        Serial.print("■");
-      else
-        Serial.print("□");
-    }
-    Serial.println();
-  }
-  */
 
   /*
   // Print all the left polygon points
@@ -161,11 +135,16 @@ void GUI::update() {
   for (int y = 0; y < eye_bbox_height + 1; ++y)
     for (int x = 0; x < eye_bbox_width + 1; ++x)
       if (contains(current_right_polygon, num_points, (x + 0.0) / eye_bbox_width, (y + 0.0) / eye_bbox_height))
-        display.setPixel(
-          right_current_x - eye_bbox_width / 2 + x,
-          right_current_y + eye_bbox_height / 2 - y
-        );
-
+        if (mirror_left)
+          display.setPixel(
+            right_current_x + eye_bbox_width / 2 - x,
+            right_current_y + eye_bbox_height / 2 - y
+          );
+        else
+          display.setPixel(
+            right_current_x - eye_bbox_width / 2 + x,
+            right_current_y + eye_bbox_height / 2 - y
+          );
   /*
   display.fillRect(
     left_current_x - eye_bbox_width / 2, 
@@ -250,7 +229,8 @@ void GUI::step() {
   // Interpolate the current point to reach the target point (movement of the eyes)
 
   float distance = sqrt(pow((current_x - target_x), 2) + pow((current_y - target_y), 2));
-  float increment = distance / 5;
+  //float distance = max(abs(current_x - target_x), (current_y - target_y));
+  float increment = distance / 10;
 
   // Check if movement is needed
   if (distance > pixel_distance_threshold) {
@@ -276,18 +256,21 @@ void GUI::step() {
   right_current_x = current_x + eye_distance;
   right_current_y = current_y;
 
-  // Update eye perspective
-  if (eye_perspective_enabled) {
+  // Vertical perspective
+  if (height_perspective_enabled) {
 
-    // Vertical perspective
     uint8_t y_distance = abs(current_y - center_y);
     float y_factor = (y_distance * 2.0) / height;  // y_distance / (height / 2) 
     eye_bbox_height = max_bbox_height - y_factor * (max_bbox_height - min_bbox_height); 
 
-    // Horizontal perspective
-    // TODO: add horizontal perspective (will require to split eye_bbox_width into
-    // eye_left_bbox_width and eye_right_bbox_width)
+  }
 
+  // Horizontal perspective
+  if (width_perspective_enabled) {
+  
+    uint8_t x_distance = abs(current_x - center_x);
+    float x_factor = (x_distance * 2.0) / width;
+    eye_bbox_width = max_bbox_width - x_factor * (max_bbox_width - min_bbox_width);    
   }
 
   // Finally, update the screen
@@ -310,16 +293,28 @@ bool GUI::is_looking_at(const float x, const float y) {
 /*
  * Eye perspective control
  */
-void GUI::enable_eye_perspective() {
-  eye_perspective_enabled = true;
+void GUI::enable_height_perspective() {
+  height_perspective_enabled = true;
 }
 
-void GUI::disable_eye_perspective() {
-  eye_perspective_enabled = false;
+void GUI::disable_height_perspective() {
+  height_perspective_enabled = false;
 }
 
-void GUI::set_eye_perspective(bool perspective_enabled) {
-  eye_perspective_enabled = perspective_enabled;
+void GUI::set_height_perspective(bool perspective_enabled) {
+  height_perspective_enabled = perspective_enabled;
+}
+
+void GUI::enable_width_perspective() {
+  width_perspective_enabled = true;
+}
+
+void GUI::disable_width_perspective() {
+  width_perspective_enabled = false;
+}
+
+void GUI::set_width_perspective(bool perspective_enabled) {
+  width_perspective_enabled = perspective_enabled;
 }
 
 /*
@@ -329,7 +324,8 @@ void GUI::set_eye_perspective(bool perspective_enabled) {
 void GUI::blink(void) {
 
   target_left_polygon = expr_blinking_points;
-  target_right_polygon = expr_blinking_points;  
+  target_right_polygon = expr_blinking_points; 
+  mirror_left = false; 
 
   blinking_occurring = true;
   interpolation_enabled = false;
@@ -351,6 +347,7 @@ void GUI::angry(void) {
   target_left_polygon = expr_angry_points;
   target_right_polygon = expr_angry_points;
   interpolation_occurring = true;
+  mirror_left = true;
 }
 
 void GUI::normal(void) {
@@ -358,6 +355,7 @@ void GUI::normal(void) {
   target_left_polygon = expr_normal_points;
   target_right_polygon = expr_normal_points;
   interpolation_occurring = true;
+  mirror_left = false;
 }
 
 void GUI::curious(void) {
@@ -365,6 +363,7 @@ void GUI::curious(void) {
   target_left_polygon = expr_curious_points;
   target_right_polygon = expr_curious_points;
   interpolation_occurring = true;
+  mirror_left = false;
 }
 
 void GUI::worried(void) {
@@ -372,6 +371,7 @@ void GUI::worried(void) {
   target_left_polygon = expr_worried_points;
   target_right_polygon = expr_worried_points;
   interpolation_occurring = true;
+  mirror_left = true;
 }
 
 void GUI::happy(void) {
@@ -379,5 +379,6 @@ void GUI::happy(void) {
   target_left_polygon = expr_happy_points;
   target_right_polygon = expr_happy_points;
   interpolation_occurring = true;
+  mirror_left = false;
 }
 

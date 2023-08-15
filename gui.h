@@ -74,9 +74,13 @@ class GUI {
     void happy(void);
     void angry(void);
 
-    void enable_eye_perspective(void);
-    void disable_eye_perspective(void);
-    void set_eye_perspective(bool perspective_enabled);
+    void enable_height_perspective(void);
+    void disable_height_perspective(void);
+    void set_height_perspective(bool perspective_enabled);
+
+    void enable_width_perspective(void);
+    void disable_width_perspective(void);
+    void set_width_perspective(bool perspective_enabled);
 
   private:
 
@@ -85,6 +89,15 @@ class GUI {
 
     // Center of the screen
     uint8_t center_x, center_y;
+
+    /*
+     * Eye perspective: if the robot looks up or down, the eyes
+     * appear squished on the height, if the robot looks left or right, 
+     * the left and right eye get squished on the width.
+     */
+    bool height_perspective_enabled, width_perspective_enabled;
+    uint8_t min_bbox_height, max_bbox_height;
+    uint8_t min_bbox_width, max_bbox_width;
 
     // Size of the bouding box of the eyes
     uint8_t eye_bbox_width, eye_bbox_height;
@@ -105,8 +118,8 @@ class GUI {
     float current_right_polygon[num_points][2];
     const float (*target_left_polygon)[2];
     const float (*target_right_polygon)[2];
-    //float target_left_polygon[][2], target_right_polygon[][2];
-
+    bool mirror_left; // true if the right eye is the mirrored version of the left eye
+    
     // If the target position is closer to the current position
     // than the trashold, then current = target
     uint8_t pixel_distance_threshold;
@@ -128,15 +141,6 @@ class GUI {
     uint8_t blinking_current_step;
     bool blinking_occurring; // true if the robot is blinking
     bool unblinking_occurring; // true if the robot is unblinking
-
-    /*
-     * Eye perspective: if the robot looks up or down, the eyes
-     * appear squished, if the robot looks left or right, the
-     * left and right eye respectively are bigger.
-     */
-    bool eye_perspective_enabled;
-    uint8_t min_bbox_width, max_bbox_width;
-    uint8_t min_bbox_height, max_bbox_height;
 
     /**
      * Screen update routine:
