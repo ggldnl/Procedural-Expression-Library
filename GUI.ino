@@ -5,14 +5,27 @@
 // GUI object
 GUI gui;
 
-// Loop iteration
-int iteration = 0;
-
 // Define frames per second.
 // Total animation time: animation_frames * FPS
 // My hardware can run at 20 FPS
 const uint8_t FPS = 30;
 const unsigned long frame_duration = 1000 / FPS;
+
+// Timing and loop
+unsigned long iteration = 0;
+unsigned long start_time;
+unsigned long elapsed_time;
+
+// Probabilities
+const uint8_t blinking_probability_threshold = 1;   // 2%
+const uint8_t looking_probability_threshold = 2;    // 2%
+const uint8_t expression_probability_threshold = 2; // 2%
+uint8_t outcome;
+
+// How many iterations an expression should last?
+const uint8_t expression_duration_in_iterations = 100;
+unsigned long last_expression_set_time = 0;
+bool neutral_expression = true;
 
 void setup() {
 
@@ -26,26 +39,20 @@ void setup() {
 
 void loop() {
 
-  //Serial.print("Iteration ");
-  //Serial.println(iteration);
-  ++iteration;
-
   // Annotate when the loop starts
-  unsigned long start = millis();
+  start_time = millis();
 
-  uint8_t probability;
 
   // Randomly decide to blink
-  probability = random(0, 100); // [0, 99]
-  if (probability < 1) {
-    //Serial.println("Blinking");
+  outcome = random(0, 100); // [0, 99]
+  if (outcome < blinking_probability_threshold)
     gui.blink();
-  }
+
 
   // Randomly look at a point; the probability for this to happen should be 
   // very low to prevent constant eye movement
-  probability = random(0, 100); // [0, 99]
-  if (probability < 2) { // 2% probability
+  outcome = random(0, 100); // [0, 99]
+  if (outcome < looking_probability_threshold) {
 
     // Randomly choose a distance and an orientation for a new point to look at
     float alpha = random(0, 361) * (PI / 180);
@@ -68,29 +75,30 @@ void loop() {
     // Translate from polar to cartesian
     uint8_t x = gui.width / 2 + ro * cos(alpha);
     uint8_t y = gui.height / 2 + ro * sin(alpha);
-
-    // Print the new point
-    //Serial.print("Looking at ( ");
-    //Serial.print(x);
-    //Serial.print(", ");
-    //Serial.print(y);
-    //Serial.println(")");
   
     // Make the robot look at the point
     gui.look(x, y);
 
   }
 
-  if (iteration == 100)
-    gui.confused();
-  
-  if (iteration == 200)
-    gui.normal();
 
+  // Randomly decide to change expression if some time (expressed in iterations) has passed
+  outcome = random(0, 100);
+  if (iteration - last_expression_set_time >= expression_duration_in_iterations && outcome < expression_probability_threshold) {
+    if (neutral_expression)
+      gui.happy();
+    else
+      gui.normal();
+    last_expression_set_time = iteration;
+    neutral_expression = !neutral_expression;
+  }
+
+  // Finalize the changes
   gui.step();
 
-  // Loop ends, compute the remaining time
-  unsigned long elapsed_time = millis() - start;
+  // Loop ends, compute the remaining time and increase current iteration counter
+  elapsed_time = millis() - start_time;
+  ++iteration;
 
   // Maintain the desired frame rate by sleeping for the remaining amount
   // of time
