@@ -1,10 +1,12 @@
 #include "gui.h"
 #include <math.h>
 
-GUI::GUI(): display(OLED_ADDRESS, SDA, SCL) {
+GUI::GUI(): u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE) {
 
-  width = display.getWidth();
-  height = display.getHeight();
+  u8g2.begin();
+
+  width = u8g2.getWidth();
+  height = u8g2.getHeight();
 
   // Center of the screen
   center_x = width / 2;
@@ -51,14 +53,12 @@ GUI::GUI(): display(OLED_ADDRESS, SDA, SCL) {
 
 void GUI::init() {
 
-  // Initialize the display
-  display.init();
-
   // Clear the buffer
-  display.clear();
+  u8g2.clearBuffer();
+  u8g2.sendBuffer();
 
   // Rotate the display
-  display.flipScreenVertically();
+
 
   // Init left and right polygon
   
@@ -102,7 +102,7 @@ void GUI::init() {
 void GUI::update() {
 
   // Clear the display
-  display.clear();
+  u8g2.clearBuffer();
 
   /*
   // Print the eye
@@ -127,7 +127,7 @@ void GUI::update() {
       
       // Normalize the points
       if (contains(current_left_polygon, num_points, (x + 0.0) / eye_bbox_width, (y + 0.0) / eye_bbox_height))
-        display.setPixel(
+        u8g2.drawPixel(
           left_current_x - eye_bbox_width / 2 + x,
           left_current_y + eye_bbox_height / 2 - y
         );
@@ -136,12 +136,12 @@ void GUI::update() {
     for (int x = 0; x < eye_bbox_width + 1; ++x)
       if (contains(current_right_polygon, num_points, (x + 0.0) / eye_bbox_width, (y + 0.0) / eye_bbox_height))
         if (mirror_left)
-          display.setPixel(
+          u8g2.drawPixel(
             right_current_x + eye_bbox_width / 2 - x,
             right_current_y + eye_bbox_height / 2 - y
           );
         else
-          display.setPixel(
+          u8g2.drawPixel(
             right_current_x - eye_bbox_width / 2 + x,
             right_current_y + eye_bbox_height / 2 - y
           );
@@ -162,7 +162,7 @@ void GUI::update() {
   */
 
   // Display the drawings
-  display.display();
+  u8g2.sendBuffer();
 }
 
 

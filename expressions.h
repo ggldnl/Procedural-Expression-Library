@@ -1,6 +1,8 @@
 #ifndef EXPRESSIONS_H
 #define EXPRESSIONS_H
 
+#include <Arduino.h>
+#include <avr/pgmspace.h>
 #include "polygon.h"
 
   // Fixed-sized array of points for the expressions. The arrays must all have
@@ -23,16 +25,16 @@ const float expr_normal_points [][2] PROGMEM = {
 };34
 */
 
-  const float expr_normal_points[][2] PROGMEM = {
-    { 0, 0.05 },
-    { 0, 0.95 },
-    { 0.05, 1 },
-    { 0.95, 1 },
-    { 1, 0.95 },
-    { 1, 0.05 },
-    { 0.95, 0 },
-    { 0.05, 0 }
-  };
+const float expr_normal_points[][2] PROGMEM = {
+  { 0, 0.05 },
+  { 0, 0.95 },
+  { 0.05, 1 },
+  { 0.95, 1 },
+  { 1, 0.95 },
+  { 1, 0.05 },
+  { 0.95, 0 },
+  { 0.05, 0 }
+};
 
 const uint8_t num_points = sizeof(expr_normal_points) / sizeof(expr_normal_points[0]);
 

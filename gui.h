@@ -4,18 +4,15 @@
 // Include stdint in order to use  uint8_t and some some byte
 #include <stdint.h>
 
-// Include the OLED library
-#include "SH1106/SH1106.h"
-
 // Include Polygon and Point definitions
 #include "polygon.h"
 
 // Include all the expressions Point arrays
 #include "expressions.h"
 
-// Declaration for SSD1306 display connected using I2C
-#define OLED_RESET 4
-#define OLED_ADDRESS 0x3C
+// Include the universal graphic library
+#include <U8g2lib.h>
+#include <Wire.h>
 
 
 class GUI {
@@ -85,7 +82,7 @@ class GUI {
   private:
 
     // Display object
-    SH1106 display;
+    U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2;
 
     // Center of the screen
     uint8_t center_x, center_y;

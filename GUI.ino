@@ -17,7 +17,7 @@ unsigned long start_time;
 unsigned long elapsed_time;
 
 // Probabilities
-const uint8_t blinking_probability_threshold = 1;   // 2%
+const uint8_t blinking_probability_threshold = 1;   // 1%
 const uint8_t looking_probability_threshold = 2;    // 2%
 const uint8_t expression_probability_threshold = 2; // 2%
 uint8_t outcome;
