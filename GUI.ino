@@ -8,7 +8,7 @@ GUI gui;
 // Define frames per second.
 // Total animation time: animation_frames * FPS
 // My hardware can run at 20 FPS
-const uint8_t FPS = 30;
+const uint8_t FPS = 20;
 const unsigned long frame_duration = 1000 / FPS;
 
 // Timing and loop
