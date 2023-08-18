@@ -12,22 +12,22 @@ namespace gui_defaults {
    * positoon (current_x, current_y). We subtract half the 
    * width of the bounding box to obtain the center of the left eye
    * and add half the width to obtain the center of the right eye. 
-   * We subtract LEFT_EYE_DISTANCE_FROM_CENTER to further shift 
+   * We subtract LEFT_EYE_OFFSET to further shift 
    * the left eye by the specified number of pixels on the left.
-   * Same thing for the right eye (RIGHT_EYE_DISTANCE_FROM_CENTER).
+   * Same thing for the right eye (RIGHT_EYE_OFFSET).
    */
-  constexpr uint8_t LEFT_EYE_DISTANCE_FROM_CENTER = 4;
+  constexpr uint8_t LEFT_EYE_OFFSET = 4;
   
   /**
    * We draw the left and right eye starting from the current 
    * positoon (current_x, current_y). We subtract half the 
    * width of the bounding box to obtain the center of the left eye
    * and add half the width to obtain the center of the right eye. 
-   * We subtract LEFT_EYE_DISTANCE_FROM_CENTER to further shift 
+   * We subtract LEFT_EYE_OFFSET to further shift 
    * the left eye by the specified number of pixels on the left.
-   * Same thing for the right eye (RIGHT_EYE_DISTANCE_FROM_CENTER).
+   * Same thing for the right eye (RIGHT_EYE_OFFSET).
    */
-  constexpr uint8_t RIGHT_EYE_DISTANCE_FROM_CENTER = 4;
+  constexpr uint8_t RIGHT_EYE_OFFSET = 4;
 
   /**
    * Minimum bounding box height.
@@ -81,6 +81,17 @@ namespace gui_defaults {
    * Number of frames for the blinking animation.
    */
   constexpr uint8_t BLINKING_ANIMATION_DEFAULT_STEPS = 4;
+
+  /**
+   * Interpolation control: true if the robot can change expression.
+   */
+  constexpr bool INTERPOLATION_ENABLED = true;
+
+  /**
+   * Blinking control: true if the robot can blink.
+   */
+  constexpr bool BLINKING_ENABLED = true;
+
 }
 
 #endif
