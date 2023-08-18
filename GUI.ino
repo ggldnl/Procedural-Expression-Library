@@ -1,6 +1,7 @@
 #include "gui.h"
 #include "display_interface/SH1106_adapter.h"
 
+
 // Create instances of adapters
 SH1106Adapter display;
 //SSD1306Adapter ssd1306Adapter;
