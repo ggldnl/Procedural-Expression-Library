@@ -42,24 +42,24 @@ namespace gui_defaults {
   /**
    * Minimum bounding box width.
    */
-  constexpr uint16_t MIN_BBOX_WIDTH = 10;
+  constexpr uint16_t MIN_BBOX_WIDTH = 15;
 
   /**
    * Maximum bounding box width.
    */
-  constexpr uint16_t MAX_BBOX_WIDTH = 20;
+  constexpr uint16_t MAX_BBOX_WIDTH = 25;
 
   /**
    * When looking up and down, the eye bounding box height get
    * squished.
    */
-  constexpr bool VERTICAL_PERSPECTIVE_ENABLED = true;
+  constexpr bool VERTICAL_PERSPECTIVE_ENABLED = false;
   
   /**
    * When looking left and right, the eye bouding box width get
    * squished.
    */
-  constexpr bool HORIZONTAL_PERSPECTIVE_ENABLED = true;
+  constexpr bool HORIZONTAL_PERSPECTIVE_ENABLED = false;
 
   /**
    * When moving from the current position to the target one, 
@@ -75,12 +75,12 @@ namespace gui_defaults {
   /**
    * Number of frames for the interpolation animation.
    */
-  constexpr uint8_t INTERPOLATION_ANIMATION_DEFAULT_STEPS = 4;
+  constexpr uint8_t INTERPOLATION_DEFAULT_STEPS = 4;
 
   /**
    * Number of frames for the blinking animation.
    */
-  constexpr uint8_t BLINKING_ANIMATION_DEFAULT_STEPS = 4;
+  constexpr uint8_t BLINKING_DEFAULT_STEPS = 2;
 
   /**
    * Interpolation control: true if the robot can change expression.
