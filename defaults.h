@@ -1,6 +1,10 @@
 #ifndef DEFAULTS_H
 #define DEFAULTS_H
 
+// Include stdint in order to use  uint8_t and some some byte
+#include <stdint.h>
+
+
 namespace gui_defaults {
   
   /**
@@ -12,7 +16,7 @@ namespace gui_defaults {
    * the left eye by the specified number of pixels on the left.
    * Same thing for the right eye (RIGHT_EYE_DISTANCE_FROM_CENTER).
    */
-  constexpr uint16_t LEFT_EYE_DISTANCE_FROM_CENTER = 4;
+  constexpr uint8_t LEFT_EYE_DISTANCE_FROM_CENTER = 4;
   
   /**
    * We draw the left and right eye starting from the current 
@@ -23,7 +27,7 @@ namespace gui_defaults {
    * the left eye by the specified number of pixels on the left.
    * Same thing for the right eye (RIGHT_EYE_DISTANCE_FROM_CENTER).
    */
-  constexpr uint16_t RIGHT_EYE_DISTANCE_FROM_CENTER = 4;
+  constexpr uint8_t RIGHT_EYE_DISTANCE_FROM_CENTER = 4;
 
   /**
    * Minimum bounding box height.
@@ -66,17 +70,17 @@ namespace gui_defaults {
    * threshold, the current position is set to the target one
    * without further computations. 
    */
-  constexpr uint16_t MIN_PIXEL_DISTANCE_THRESHOLD = 2;
+  constexpr uint8_t MIN_PIXEL_DISTANCE_THRESHOLD = 2;
 
   /**
    * Number of frames for the interpolation animation.
    */
-  constexpr uint16_t INTERPOLATION_ANIMATION_DEFAULT_STEPS = 4;
+  constexpr uint8_t INTERPOLATION_ANIMATION_DEFAULT_STEPS = 4;
 
   /**
    * Number of frames for the blinking animation.
    */
-  constexpr uint16_t BLINKING_ANIMATION_DEFAULT_STEPS = 4;
+  constexpr uint8_t BLINKING_ANIMATION_DEFAULT_STEPS = 4;
 }
 
 #endif
