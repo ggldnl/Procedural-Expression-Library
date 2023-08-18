@@ -5,13 +5,13 @@
 #include <avr/pgmspace.h>
 #include "polygon.h"
 
-  // Fixed-sized array of points for the expressions. The arrays must all have
-  // the same number of points in order to interpolate between them and pass
-  // from an expression to another.
-  // All expressions are array of points with coordinates in [0, 1] range
-  // that will be scaled to the desired dimension.
+// Fixed-sized array of points for the expressions. The arrays must all have
+// the same number of points in order to interpolate between them and pass
+// from an expression to another.
+// All expressions are array of points with coordinates in [0, 1] range
+// that will be scaled to the desired dimension.
 
-  /*
+/*
 // Square look
 const float expr_normal_points [][2] PROGMEM = {
   {0, 0},
