@@ -1,21 +1,18 @@
 #ifndef GUI_H
 #define GUI_H
 
-// Include stdint in order to use  uint8_t and uint16_t to save some bit
+// Include stdint in order to use  uint8_t and some some byte
 #include <stdint.h>
+
+// Include display interface
+#include "display_interface/display_interface.h"
 
 // Include Polygon and Point definitions
 #include "polygon.h"
 
-// Include all the expressions Point arrays
+// Include all the expressions point arrays
 #include "expressions.h"
 
-// Include all the parameters
-#include "defaults.h"
-
-// Include the universal graphic library
-#include <U8g2lib.h>
-#include <Wire.h>
 
 
 class GUI {
@@ -28,7 +25,7 @@ class GUI {
     /**
      * Constructor.
      */
-    GUI(void);
+    GUI(DisplayInterface* displayInterface);
 
     /**
      * Initialize the GUI.
@@ -84,10 +81,8 @@ class GUI {
 
   private:
 
-    /*
-     * Display object. Change this to use another display.
-     */
-    U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2;
+    // Display object
+    DisplayInterface* displayInterface;
 
     // Center of the screen
     uint8_t center_x, center_y;
@@ -97,17 +92,13 @@ class GUI {
      * appear squished on the height, if the robot looks left or right, 
      * the left and right eye get squished on the width.
      */
-    bool vertical_perspective_enabled, horizontal_perspective_enabled;
-
-    /*
-     * Maximum and minimum size of the bounding boxes for the left
-     * and right eyes.
-     */
+    bool height_perspective_enabled, width_perspective_enabled;
     uint8_t min_bbox_height, max_bbox_height;
     uint8_t min_bbox_width, max_bbox_width;
 
     // Size of the bouding box of the eyes
     uint8_t eye_bbox_width, eye_bbox_height;
+    uint8_t eye_distance;
 
     // Current and target coordinates
     uint8_t current_x, current_y;
@@ -119,9 +110,6 @@ class GUI {
     uint8_t left_target_x, left_target_y; 
     uint8_t right_target_x, right_target_y;
 
-    uint8_t left_eye_distance_from_center_x;
-    uint8_t right_eye_distance_from_center_x;
-
     // Expression
     float current_left_polygon[num_points][2];
     float current_right_polygon[num_points][2];
@@ -131,15 +119,13 @@ class GUI {
     
     // If the target position is closer to the current position
     // than the trashold, then current = target
-    uint8_t min_pixel_distance_threshold;
+    uint8_t pixel_distance_threshold;
 
     // Interpolation among current and target polygons
-    bool interpolation_enabled; // true if changing expression is enabled
-    bool interpolation_occurring; // true if the robot is currently changing expression
-
+    bool interpolation_enabled;
     uint8_t interpolation_total_steps;
     uint8_t interpolation_current_step;
-    float interpolation_factor;
+    bool interpolation_occurring;
 
     /*
      * Blinking animation: the blinking animation is different 
@@ -148,13 +134,10 @@ class GUI {
      * animation we must disable the transition from one expression 
      * to another (using interpolation_enabled)
      */
-    bool blinking_enabled; // true if the blinking is enabled
-    bool blinking_occurring; // true if the robot is currently blinking
-    bool unblinking_occurring; // true if the robot is currently unblinking
-
     uint8_t blinking_total_steps;
     uint8_t blinking_current_step;
-    float blinking_factor;
+    bool blinking_occurring; // true if the robot is blinking
+    bool unblinking_occurring; // true if the robot is unblinking
 
     /**
      * Screen update routine:

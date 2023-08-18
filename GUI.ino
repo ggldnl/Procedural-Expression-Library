@@ -1,14 +1,16 @@
 #include "gui.h"
-#include <math.h>
+#include "display_interface/SH1106_adapter.h"
 
+// Create instances of adapters
+SH1106Adapter display;
+//SSD1306Adapter ssd1306Adapter;
 
-// GUI object
-GUI gui;
+GUI gui(&display);
 
 // Define frames per second.
 // Total animation time: animation_frames * FPS
 // My hardware can run at 20 FPS
-const uint8_t FPS = 20;
+const uint8_t FPS = 30;
 const unsigned long frame_duration = 1000 / FPS;
 
 // Timing and loop
@@ -68,7 +70,7 @@ void loop() {
 
     // Compute the distance between the center and the point
     float distance = sqrt(pow(box_point_x - gui.width / 2, 2) + pow(box_point_y - gui.height / 2, 2));
-
+    
     // Randomly choose a distance from the center to look at
     float ro = random(distance / 5, distance / 2);
 
