@@ -343,10 +343,6 @@ void GUI::normal(void) {
 
 void GUI::confused(void) {
 
-  // we will use epxr_normal_points
-  // target_left_polygon = expr_curious_points;
-  // target_right_polygon = expr_curious_points;
-
   // Randomly decide to squish the left or right eye
   uint8_t probability = random(0, 100); // [0, 99]
   if (probability < 50) {
