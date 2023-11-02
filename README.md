@@ -2,11 +2,13 @@
 
 This repository serves as a foundation for developing a social robot with expressive eyes, taking inspiration from Vector and Cozmo. This README provides an overview of the project and the underlying eye expression mechanism. The current version is a proof of concept. It is not intended to be a finished product and has no real usage now besides being cute and keeping you company.
 
-![](./media/animation.gif)
+<p align="center">
+  <img width="480" height="480" src="./media/animation.gif">
+</p>
 
 ## Introduction
 
-This project aims to create a concept for a social robot. In the future, the expressions that the robot is now limited to could be used while idling and be accompanied by other animations to notify something to the user. Possible use cases are:
+This project aims to create a concept for a social robot. In the future, the expressions that the robot is now limited to could be used while idling and be accompanied by other animations to notify something to the useful. Possible use cases are:
 
 - notify users of calendar events, activities, meetings and so on.
 
