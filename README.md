@@ -2,7 +2,7 @@
 
 This repository serves as a foundation for developing a social robot with expressive eyes, taking inspiration from Vector and Cozmo. This README provides an overview of the project and the underlying eye expression mechanism. The current version is a proof of concept. It is not intended to be a finished product and has no real usage now besides being cute and keeping you company.
 
-![](https://github.com/ggldnl/GUI/media/animation.gif)
+![](./media/animation.gif)
 
 ## Introduction
 
