@@ -14,9 +14,11 @@ This project aims to create a concept for a social robot. In the future, the exp
 
 - remind users of specific times to do some activity, effectively helping in scheduling tasks throughout the day.
 
+This code is heavy both computationally and memory-wise for the [actual robot](https://github.com/ggldnl/Desktop-Companion-Robot-Hardware) that runs it. We can [offload the whole expression mechanism](https://github.com/ggldnl/Desktop-Companion-Robot) and send back to the robot the frames it should visualize on the OLED screen.
+
 ## Eye Expression Mechanism
 
-The core of this project lies in its eye expression mechanism. Rather than relying on predefined image sequences for the animations, with my approach each animation is procedurally generated. This means that it is simple to add new expressions and the transition between them and the others is handled automatically. The user can define an 8-point polygon representing the desired eye expression, or a pair of them for asymmetrical expressions. Each point within this polygon needs to have coordinates in range [0,1]. This enables us to scale the expression proportionally to the robot screen's size and translate the polygons to match the point that the robot is currently looking at. Transitioning between expressions is achieved through interpolation: each point of the current polygon gradually transitions to match the target polygon. The same mechanism is used to implement the blinking of the eyes: the current polygon is interpolated to a thin rectangle and then brought back to its original form. The polygons are then discretized and only the pixels whose coordinates falls inside the polygons on the screen are lit.
+The core of this project lies in its eye expression mechanism. Rather than relying on predefined image sequences for the animations, with my approach each animation is procedurally generated. This means that it is simple to add new expressions and the transition between them and the others is handled automatically. The user can define an 8-point polygon representing the desired eye expression, or a pair of them for asymmetrical expressions. Each point within this polygon needs to have coordinates in range [0,1]. This enables scaling expressions proportionally to the robot screen's size and translate the polygons to match the point that the robot is currently looking at. Transitioning between expressions is achieved through interpolation: each point of the current polygon gradually transitions to match the same point on the target polygon. The same mechanism is used to implement the blinking of the eyes: the current polygon is interpolated to a thin rectangle and then brought back to its original form. The polygons are then discretized and only the pixels whose coordinates falls inside the polygons on the screen are lit up.
 
 # Add a new expression
 
@@ -37,7 +39,7 @@ const float expr_confused_points[][2] PROGMEM = {
 };
 ```
 
-Add a method that will start the animation once it is invoked:
+Add a method that will start the animation once it is called:
 
 `gui.h`:
 ```cpp
