@@ -8,7 +8,7 @@ This repository serves as a foundation for developing a social robot with expres
 
 ## Introduction
 
-This project aims to create a concept for a social robot. In the future, the expressions that the robot is now limited to could be used while idling and be accompanied by other animations to notify something to the useful. Possible use cases are:
+This project aims to create a concept for a social robot. In the future, the expressions that the robot is now limited to could be used while idling and be accompanied by other animations to notify something useful to the user. Possible use cases are:
 
 - notify users of calendar events, activities, meetings and so on.
 
