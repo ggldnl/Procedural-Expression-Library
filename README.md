@@ -1,6 +1,6 @@
 # Desktop Robot Companion
 
-This repository serves as a foundation for developing a social robot with expressive eyes, taking inspiration from Vector and Cozmo. This README provides an overview of the project and the underlying eye expression mechanism. The current version is a proof of concept. It is not intended to be a finished product and has no real usage now besides being cute and keeping you company.
+This repository serves as a foundation for developing a social robot with expressive eyes, taking inspiration from Vector and Cozmo. This README provides an overview of the project and the underlying eye expression mechanism. The current version is a proof of concept.
 
 <p align="center">
   <img width="480" height="480" src="./media/animation.gif">
@@ -8,19 +8,14 @@ This repository serves as a foundation for developing a social robot with expres
 
 ## Introduction
 
-This project aims to create a concept for a social robot. In the future, the expressions that the robot is now limited to could be used while idling and be accompanied by other animations to notify something useful to the user. Possible use cases are:
-
-- notify users of calendar events, activities, meetings and so on.
-
-- remind users of specific times to do some activity, effectively helping in scheduling tasks throughout the day.
-
-This code is heavy both computationally and memory-wise for the [actual robot](https://github.com/ggldnl/Desktop-Companion-Robot-Hardware) that runs it. We can [offload the whole expression mechanism](https://github.com/ggldnl/Desktop-Companion-Robot) and send back to the robot the frames it should visualize on the OLED screen.
+This project aims to create a facial expression library that can be used for social robot. This library currently provides a procedural way to define expressions, transition between them when an event occurs and a way to dynamically adapt the expression to the size of the screen you are using on the robot. 
+This code is heavy both computationally and memory-wise. A better approach could perhaps be to [offload the whole expression mechanism to a server](https://github.com/ggldnl/Desktop-Companion-Robot) and send back to the robot the frames it should visualize on the OLED screen.
 
 ## Eye Expression Mechanism
 
-The core of this project lies in its eye expression mechanism. Rather than relying on predefined image sequences for the animations, with my approach each animation is procedurally generated. This means that it is simple to add new expressions and the transition between them and the others is handled automatically. The user can define an 8-point polygon representing the desired eye expression, or a pair of them for asymmetrical expressions. Each point within this polygon needs to have coordinates in range [0,1]. This enables scaling expressions proportionally to the robot screen's size and translate the polygons to match the point that the robot is currently looking at. Transitioning between expressions is achieved through interpolation: each point of the current polygon gradually transitions to match the same point on the target polygon. The same mechanism is used to implement the blinking of the eyes: the current polygon is interpolated to a thin rectangle and then brought back to its original form. The polygons are then discretized and only the pixels whose coordinates falls inside the polygons on the screen are lit up.
+Rather than relying on predefined image sequences for the animations, with my approach each animation is procedurally generated. This means that it is simple to add new expressions and the transition between them and the others is handled automatically. The user can define an 8-point polygon representing the desired eye expression, or a pair of them for asymmetrical expressions. Each point within this polygon needs to have coordinates in range [0,1]. This enables scaling expressions proportionally to the robot screen's size and translate the polygons to match the point that the robot is currently looking at. Transitioning between expressions is achieved through interpolation: each point of the current polygon gradually transitions to match the same point on the target polygon. The same mechanism is used to implement the blinking of the eyes: the current polygon is interpolated to a thin rectangle and then brought back to its original form. The polygons are then discretized and only the pixels whose coordinates falls inside the polygons on the screen are lit up.
 
-# Add a new expression
+## Add a new expression
 
 As an example, here it is showed how to add a `confused` expression in which one of the two eyes is more squished than the other.
 
@@ -57,7 +52,7 @@ void GUI::confused(void) {
 }
 ```
 
-The `interpolation_occurring` flag signals the main loop that an animation is occurring, while the `mirror_left` flag is self explainatory. By default if we define only one eye for an expression, this will be the left eye and will then be mirrored to produce the right one.
+The `interpolation_occurring` flag signals the main loop that an animation is occurring when the method is called, while the `mirror_left` flag is self explainatory. By default if we define only one eye for an expression, this will be the left eye and will then be mirrored to produce the right one.
 
 The underlying logic can of course be more complex:
 ```cpp
