@@ -85,7 +85,3 @@ if (condition) {
     gui.confused();
 }
 ```
-
-## License
-
-This project is licensed under the MIT License, granting you the freedom to use, modify, and distribute it in accordance with the terms specified in the license.
