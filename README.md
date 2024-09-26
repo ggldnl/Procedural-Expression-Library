@@ -1,6 +1,6 @@
 # Desktop Robot Companion
 
-This repository serves as a foundation for developing a social robot with expressive eyes, taking inspiration from Vector and Cozmo. This README provides an overview of the project and the underlying eye expression mechanism. The current version is a proof of concept.
+The code in this repository serves as a foundation for developing a social robot with expressive eyes, taking inspiration from Vector and Cozmo. This README provides an overview of the project and the underlying eye expression mechanism. The current version is a proof of concept.
 
 <p align="center">
   <img width="480" height="480" src="./media/animation.gif">
